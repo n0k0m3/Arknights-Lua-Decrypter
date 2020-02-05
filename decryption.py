@@ -32,13 +32,21 @@ def text_asset_decrypt(filename):
         data = file.read()
         # XOR first 16 bytes of the encrypted file and AES_MASK
         masked_iv = data[:AES_IV_LENGTH]
-        print(masked_iv)
         aes_iv = bytearray(b ^ m for (b, m) in zip(masked_iv, AES_MASK))
-        print(aes_iv)
         # Decrypt the data with generated aes_iv key
         game_data = rijndaelmanaged_decrypt(data[AES_IV_LENGTH:], AES_KEY, aes_iv)
         # Save the decrypted data
         with open(filename.replace('.txt', '') + '.decrypted.json', 'wb') as fw:
+            fw.write(game_data)
+
+
+def text_asset_decrypt_withsign(filename):
+    with open(filename, 'rb') as file:
+        data = file.read()
+        masked_iv = data[128:128+AES_IV_LENGTH]
+        aes_iv = bytearray(b ^ m for (b, m) in zip(masked_iv, AES_MASK))
+        game_data = rijndaelmanaged_decrypt(data[AES_IV_LENGTH+128:], AES_KEY, aes_iv)
+        with open(Path(filename).stem + '.decrypted.lua', 'wb') as fw:
             fw.write(game_data)
 
 
@@ -56,7 +64,8 @@ def text_asset_encrypt(filename):
             # Structure of the encrypted assets: Masked IV key + Encrypted text (of the whole file)
             fw.write(masked_iv + game_data_encrypted)
 
-text_asset_decrypt('TextAsset\\HotfixBase.lua.txt')
+os.chdir('TextAsset')
+text_asset_decrypt_withsign('HotfixProcesser.lua.txt')
 
 # text_asset_decrypt('skill_table.txt')
 # text_asset_encrypt('skill_table.decrypted.json')
