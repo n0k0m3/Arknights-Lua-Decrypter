@@ -8,3 +8,5 @@ Note that Arknights has a very robust hash checking system so if you know how to
 This is now a tool for AK data mining. You can also just get the dump from `https://github.com/Dimbreath/ArknightsData` instead
 
 Note: `jsontest.py` is just my playground file, ignore it.
+
+PM Discord n0k0m3#3179 if you have any question (note that I'm not obliged to answer all of them though)
