@@ -24,7 +24,7 @@ def rijndaelmanaged_decrypt(data, key, iv):
 
 
 # TextAsset decryption, referenced from InfiniteTsukuyomi/PyAutoGame
-def text_asset_decrypt(filename):
+def text_asset_decrypt(filename): # decrypt lua table
     # TextAsset uses aes-128-cbc encryption algorithm, encryption key (AES_KEY) is the first 16 bytes of CHAT_MASK
     # Note: CHAT_MASK (chatMask) is just how the concat'ed key is called in il2cpp
     with open(filename, 'rb') as file:
@@ -40,7 +40,7 @@ def text_asset_decrypt(filename):
             fw.write(game_data)
 
 
-def text_asset_decrypt_withsign(filename):
+def text_asset_decrypt_withsign(filename): # decrypt lua modules/functions
     with open(filename, 'rb') as file:
         data = file.read()
         masked_iv = data[128:128 + AES_IV_LENGTH]
@@ -69,14 +69,14 @@ def text_asset_encrypt(filename, switch):
                 fw.write(masked_iv + game_data_encrypted)
 
 
-def text_asset_encrypt_withsign(filename):
-    with open(filename, 'rb') as file:
-        data = file.read()
-        aes_iv = bytearray(data[:AES_IV_LENGTH])
-        masked_iv = bytearray(i ^ m for (i, m) in zip(aes_iv, AES_MASK))
-        game_data_encrypted = rijndaelmanaged_encrypt(data, AES_KEY, aes_iv)
-        with open(filename.replace('decrypted', 'encrypted'), 'wb') as fw:
-            fw.write(masked_iv + game_data_encrypted)
+# def text_asset_encrypt_withsign(filename): # Scratch this, without the signed hash this is useless
+#     with open(filename, 'rb') as file:
+#         data = file.read()
+#         aes_iv = bytearray(data[:AES_IV_LENGTH])
+#         masked_iv = bytearray(i ^ m for (i, m) in zip(aes_iv, AES_MASK))
+#         game_data_encrypted = rijndaelmanaged_encrypt(data, AES_KEY, aes_iv)
+#         with open(filename.replace('decrypted', 'encrypted'), 'wb') as fw:
+#             fw.write(masked_iv + game_data_encrypted)
 
 # Sample usage to decrypt 
 # os.chdir('TextAsset')
