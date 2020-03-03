@@ -5,7 +5,7 @@ import glob, os
 
 AES_KEY = b'8OjXUSNSi8yXC0u9'
 AES_MASK = b'8mNWvh7MRLGhyEuQ'
-AES_KEY_LENGTH = 16  # from il2cpp, implies AES 128 bit
+AES_KEY_LENGTH = 16  # From il2cpp, implies AES 128 bit
 AES_IV_LENGTH = 16  # CBC Mode
 
 
@@ -60,13 +60,12 @@ def text_asset_encrypt(filename, switch):
         masked_iv = bytearray(i ^ m for (i, m) in zip(aes_iv, AES_MASK))
         # Encrypt the data AES, we need to encrypt the whole file
         game_data_encrypted = rijndaelmanaged_encrypt(data, AES_KEY, aes_iv)
-        if switch == "compare":
+        if switch == "compare": # Useful to compare hash-salted lua file (usually contains functions for the game logic)
             with open(filename.replace('decrypted', 'encrypted'), 'wb') as fw:
                 # Structure of the encrypted assets: Masked IV key + Encrypted text (of the whole file)
                 fw.write(masked_iv + game_data_encrypted)
-        else:
+        else:                   # leave it blank for lua data table
             with open(filename.replace('decrypted.json', 'txt'), 'wb') as fw:
-                # Structure of the encrypted assets: Masked IV key + Encrypted text (of the whole file)
                 fw.write(masked_iv + game_data_encrypted)
 
 
@@ -79,11 +78,12 @@ def text_asset_encrypt_withsign(filename):
         with open(filename.replace('decrypted', 'encrypted'), 'wb') as fw:
             fw.write(masked_iv + game_data_encrypted)
 
+# Sample usage to decrypt 
+# os.chdir('TextAsset')
+# text_asset_decrypt(`gacha_table.lua`)
+# text_asset_encrypt('gacha_table.decrypted.json','') #leave the switch blank for normal encryption
 
-os.chdir('TextAsset')
-text_asset_encrypt('gacha_table.decrypted.json','')
-# text_asset_encrypt('skill_table.decrypted.json')
-
+# Sample usage to decrypt/encrypt everything
 # if __name__ == "__main__":
 #     os.chdir('TextAsset')
 #     for file in glob.glob("**/*.txt",recursive=True):
