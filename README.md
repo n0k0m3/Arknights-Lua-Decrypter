@@ -2,6 +2,7 @@
 
 ## Requirements
 
+**Python 3.6+**
 ```
 # Clone repo
 git clone https://github.com/n0k0m3/Arknights-Lua-Decrypter.git
@@ -10,12 +11,14 @@ cd Arknights-Lua-Decrypter
 # curl -sSL https://install.python-poetry.org | python3 -
 # Install dependecies
 poetry install
+# Activate poetry venv
+poetry shell
 ```
 
 ## Usage
 
 ```
-poetry run python decryption.py [path_to_encrypted_data_folder]
+python decryption.py [path_to_encrypted_data_folder]
 ```
 
 ## Notes
