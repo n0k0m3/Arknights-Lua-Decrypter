@@ -1,7 +1,7 @@
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from pathlib import Path
-import glob, os
+import glob, os, sys
 
 AES_KEY = b'8OjXUSNSi8yXC0u9'
 AES_MASK = b'8mNWvh7MRLGhyEuQ'
@@ -84,9 +84,9 @@ def text_asset_encrypt(filename, switch):
 # text_asset_encrypt('gacha_table.decrypted.json','') #leave the switch blank for normal encryption
 
 # Sample usage to decrypt/encrypt everything
-# if __name__ == "__main__":
-#     os.chdir('TextAsset')
-#     for file in glob.glob("**/*.txt",recursive=True):
-#         text_asset_decrypt(file)
-#     for file in glob.glob("**/*.json",recursive=True):
-#         text_asset_encrypt(file)
+if __name__ == "__main__":
+    os.chdir(sys.argv[0])
+    for file in glob.glob("**/*.txt",recursive=True):
+        text_asset_decrypt(file)
+    for file in glob.glob("**/*.json",recursive=True):
+        text_asset_encrypt(file)
