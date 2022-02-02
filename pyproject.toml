@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "arknights-lua-decrypter"
+version = "1.0.0"
+description = "encrypt/decrypt Arknights lua"
+authors = ["n0k0m3 <10925298+n0k0m3@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pycryptodome = "^3.14.0"
+
+[tool.poetry.dev-dependencies]
+orjson = "^3.6.6"
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
